@@ -1,0 +1,41 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.7/schema.json",
+  "files": {
+    "includes": [
+      "**",
+      "!src/api/generated/**",
+      "!static/**"
+    ]
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "formatter": {
+    "indentStyle": "space"
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "a11y": {
+        "noLabelWithoutControl": {
+          "level": "error",
+          "options": {
+            "inputComponents": [
+              "Input",
+              "Select",
+              "GroupsFilterSelect",
+              "CountriesFilterSelect",
+              "PositionFilterSelect",
+              "SortSelect"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
