@@ -1,5 +1,8 @@
 import { Suspense } from "react";
 import { useVotes } from "../lib/api";
+import VotesList from "./VotesList";
+
+import "./App.css";
 
 function App() {
   const { data } = useVotes();
@@ -7,20 +10,16 @@ function App() {
   return (
     <div className="app">
       <header className="app__header">
-        <h1>HowTheyVote.eu Majority Tracker</h1>
+        <h1 className="app__logo">HowTheyVote.eu Majority Tracker</h1>
       </header>
 
-      <main>
+      <main className="app__main">
         <Suspense fallback="Loading…">
-          <ul>
-            {data?.results.map((vote) => (
-              <li key={vote.id}>{vote.display_title}</li>
-            ))}
-          </ul>
+          {data && <VotesList votes={data.results} />}
         </Suspense>
       </main>
 
-      <footer>
+      <footer className="app__footer">
         <p>
           Built using the HowTheyVote.eu API and data licensed under the Open
           Database License.

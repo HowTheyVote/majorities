@@ -1,0 +1,38 @@
+:root {
+  --line-height: 1.5;
+  --space: calc(var(--line-height) * 1em);
+  --space-sm: calc(0.75 * var(--space));
+  --space-xs: calc(0.5 * var(--space));
+  --space-xxs: calc(0.25 * var(--space));
+  --space-lg: calc(1.25 * var(--space));
+
+  --font-size: 100%;
+  --font-size-lg: 1.15rem;
+  --font-size-sm: 0.85rem;
+
+  --color-bg: rgb(0, 39, 64);
+  --color-bg-subtle: rgb(251, 253, 255);
+  --color-text: rgb(30, 30, 30);
+  --color-text-muted: rgb(90, 90, 100);
+  --color-border: rgb(230, 230, 255);
+
+  --radius: 5px;
+
+  --font-default: system-ui;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-default);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
