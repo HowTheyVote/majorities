@@ -7,8 +7,16 @@ export type Vote = {
   description?: string;
 };
 
+export type Facet = {
+  value: string;
+  count: number;
+};
+
 export type VotesResponse = {
   results: Array<Vote>;
+  facets: {
+    month: Array<Facet>;
+  };
 };
 
 export function useVotes() {

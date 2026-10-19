@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { useVotes } from "../lib/api";
+import Histogram from "./Histogram";
 import VotesList from "./VotesList";
 
 import "./App.css";
@@ -15,7 +16,12 @@ function App() {
 
       <main className="app__main">
         <Suspense fallback="Loading…">
-          {data && <VotesList votes={data.results} />}
+          {data && (
+            <>
+              <Histogram months={data.facets.month} />
+              <VotesList votes={data.results} />
+            </>
+          )}
         </Suspense>
       </main>
 
