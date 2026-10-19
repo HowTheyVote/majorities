@@ -19,10 +19,10 @@ ESBUILD = ./node_modules/.bin/esbuild \
 	src/index.tsx
 
 dev: dist/index.html
-	$(ESBUILD) --serve=9000 --servedir=dist
+	$(ESBUILD) --serve=9000 --servedir=dist --define:API_BASE_URL='"http://localhost:5000/api"'
 
 build: dist/index.html
-	$(ESBUILD)
+	$(ESBUILD) --define:API_BASE_URL='"https://howtheyvote.eu/api"'
 
 dist/index.html: src/index.html
 	mkdir -p dist
