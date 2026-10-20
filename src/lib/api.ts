@@ -9,23 +9,43 @@ export type Vote = {
 
 export type Facet = {
   value: string;
+  label: string;
   count: number;
 };
 
 export type VotesResponse = {
   results: Array<Vote>;
-  facets: {
-    month: Array<Facet>;
-  };
+  facets: Record<"month" | "groups_required_for_majority", Array<Facet>>;
 };
 
-export function useVotes() {
-  return useAPI<VotesResponse>("votes");
+export function useVotes({
+  pageSize = 20,
+  facets = [],
+  filters = {},
+}: {
+  pageSize?: number;
+  facets?: Array<string>;
+  filters?: Record<string, string | undefined>;
+}) {
+  const params = new URLSearchParams();
+  params.set("page_size", pageSize.toString());
+
+  for (const facet of facets) {
+    params.append("facets", facet);
+  }
+
+  for (const [key, value] of Object.entries(filters)) {
+    if (value !== undefined) {
+      params.set(key, value);
+    }
+  }
+
+  return useAPI<VotesResponse>("votes", params);
 }
 
-function useAPI<Data>(endpoint: string) {
+function useAPI<Data>(endpoint: string, params: URLSearchParams) {
   const url = new URL(`${API_BASE_URL}/${endpoint}`);
-  url.searchParams.append("facets", "month");
+  url.search = params.toString();
 
   const fetcher = async () => {
     const response = await fetch(url);
