@@ -3,6 +3,8 @@ import { useVotes } from "../lib/api";
 import Histogram from "./Histogram";
 import VotesList from "./VotesList";
 
+const EP_10_START_DATE = "2024-07-16";
+
 import "./App.css";
 
 function App() {
@@ -11,6 +13,9 @@ function App() {
   const { data: all } = useVotes({
     pageSize: 0,
     facets: ["month", "groups_required_for_majority"],
+    filters: {
+      "date[gte]": EP_10_START_DATE,
+    },
   });
 
   const { data: filtered } = useVotes({
@@ -18,6 +23,7 @@ function App() {
     facets: ["month"],
     filters: {
       groups_required_for_majority: groups,
+      "date[gte]": EP_10_START_DATE,
     },
   });
 
