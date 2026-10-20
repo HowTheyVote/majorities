@@ -3,28 +3,27 @@ import { Group } from "@visx/group";
 import { scaleBand, scaleLinear } from "@visx/scale";
 import { Bar } from "@visx/shape";
 
-import type { Facet } from "../lib/api";
-
 import "./Histogram.css";
 
 type HistogramProps = {
-  months: Array<Facet>;
+  data: Record<string, { all: number; filtered: number }>;
 };
 
 const width = 640;
 const height = 240;
 
-function Histogram({ months }: HistogramProps) {
+function Histogram({ data }: HistogramProps) {
   const innerWidth = width;
   const innerHeight = height - 24;
 
-  const sortedMonths = [...months].sort((a, b) =>
-    a.value.localeCompare(b.value),
+  const sortedMonths = [...Object.keys(data)].sort((a, b) =>
+    a.localeCompare(b),
   );
-  const maxCount = Math.max(1, ...sortedMonths.map((month) => month.count));
+
+  const maxCount = Math.max(1, ...Object.values(data).map(({ all }) => all));
 
   const xScale = scaleBand<string>({
-    domain: sortedMonths.map((month) => month.value),
+    domain: sortedMonths,
     range: [0, innerWidth],
     padding: 0.2,
   });
@@ -43,23 +42,28 @@ function Histogram({ months }: HistogramProps) {
       viewBox={`0 0 ${width} ${height}`}
     >
       <Group>
-        {sortedMonths.map((month) => {
-          const x = xScale(month.value);
-          const y = yScale(month.count);
-
-          if (x === undefined) {
-            return null;
-          }
+        {Object.entries(data).map(([month, values]) => {
+          const x = xScale(month);
+          const series = ["all", "filtered"] as const;
 
           return (
-            <Bar
-              key={month.value}
-              x={x}
-              y={y}
-              width={xScale.bandwidth()}
-              height={innerHeight - y}
-              fill="var(--color-bg)"
-            />
+            <Group key={month} className="histogram__stack">
+              {series.map((key) => {
+                const y = yScale(values[key]);
+
+                return (
+                  <Bar
+                    key={key}
+                    className={`histogram__bar`}
+                    data-series={key}
+                    x={x}
+                    y={y}
+                    width={xScale.bandwidth()}
+                    height={innerHeight - y}
+                  />
+                );
+              })}
+            </Group>
           );
         })}
 

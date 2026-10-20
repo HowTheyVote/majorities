@@ -2,6 +2,7 @@ import { Suspense, useState } from "react";
 import { useVotes } from "../lib/api";
 import Histogram from "./Histogram";
 import VotesList from "./VotesList";
+import { prepareHistogramData } from "../lib/histogram";
 
 const EP_10_START_DATE = "2024-07-16";
 
@@ -35,7 +36,9 @@ function App() {
 
       <main className="app__main">
         <Suspense fallback="Loading…">
-          {filtered && <Histogram months={filtered.facets.month} />}
+          {all && filtered && <Histogram
+            data={prepareHistogramData(all.facets.month, filtered.facets.month)}
+          />}
 
           {all?.facets.groups_required_for_majority && (
             <select

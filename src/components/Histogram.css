@@ -1,3 +1,11 @@
 .histogram {
   overflow: visible;
 }
+
+.histogram__bar[data-series="all"] {
+  fill: var(--color-blue-light);
+}
+
+.histogram__bar[data-series="filtered"] {
+  fill: var(--color-blue-dark);
+}
