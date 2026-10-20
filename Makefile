@@ -14,7 +14,6 @@ ESBUILD = ./node_modules/.bin/esbuild \
 	--public-path=/dist \
 	--sourcemap \
 	--outfile=dist/index.js \
-	--minify \
 	--keep-names \
 	src/index.tsx
 
@@ -22,7 +21,7 @@ dev: dist/index.html
 	$(ESBUILD) --serve=9000 --servedir=dist --define:API_BASE_URL='"http://localhost:5000/api"'
 
 build: dist/index.html
-	$(ESBUILD) --define:API_BASE_URL='"https://howtheyvote.eu/api"'
+	$(ESBUILD) --minify --define:API_BASE_URL='"https://howtheyvote.eu/api"'
 
 dist/index.html: src/index.html
 	mkdir -p dist
