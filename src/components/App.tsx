@@ -1,33 +1,10 @@
-import { Suspense, useState } from "react";
-import { useVotes } from "../lib/api";
-import Histogram from "./Histogram";
-import VotesList from "./VotesList";
-import { prepareHistogramData } from "../lib/histogram";
-
-const EP_10_START_DATE = "2024-07-16";
+import { Suspense } from "react";
+import Spinner from "./Spinner";
+import Tracker from "./Tracker";
 
 import "./App.css";
 
 function App() {
-  const [groups, setGroups] = useState<string | undefined>();
-
-  const { data: all } = useVotes({
-    pageSize: 0,
-    facets: ["month", "groups_required_for_majority"],
-    filters: {
-      "date[gte]": EP_10_START_DATE,
-    },
-  });
-
-  const { data: filtered } = useVotes({
-    pageSize: 20,
-    facets: ["month"],
-    filters: {
-      groups_required_for_majority: groups,
-      "date[gte]": EP_10_START_DATE,
-    },
-  });
-
   return (
     <div className="app">
       <header className="app__header">
@@ -35,28 +12,14 @@ function App() {
       </header>
 
       <main className="app__main">
-        <Suspense fallback="Loading…">
-          {all && filtered && <Histogram
-            data={prepareHistogramData(all.facets.month, filtered.facets.month)}
-          />}
-
-          {all?.facets.groups_required_for_majority && (
-            <select
-              value={groups}
-              onChange={(event) => setGroups(event.currentTarget.value)}
-            >
-              <option value="">Select…</option>
-              {all.facets.groups_required_for_majority.map(
-                ({ value, label }) => (
-                  <option key={value} value={value}>
-                    {label}
-                  </option>
-                ),
-              )}
-            </select>
-          )}
-
-          {filtered && <VotesList votes={filtered.results} />}
+        <Suspense
+          fallback={
+            <div className="app__loading">
+              <Spinner />
+            </div>
+          }
+        >
+          <Tracker />
         </Suspense>
       </main>
 
