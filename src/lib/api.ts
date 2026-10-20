@@ -25,7 +25,7 @@ export function useVotes({
 }: {
   pageSize?: number;
   facets?: Array<string>;
-  filters?: Record<string, string | undefined>;
+  filters?: Record<string, Array<string>>;
 }) {
   const params = new URLSearchParams();
   params.set("page_size", pageSize.toString());
@@ -34,9 +34,9 @@ export function useVotes({
     params.append("facets", facet);
   }
 
-  for (const [key, value] of Object.entries(filters)) {
-    if (value !== undefined) {
-      params.set(key, value);
+  for (const [key, values] of Object.entries(filters)) {
+    for (const value of values) {
+      params.append(key, value);
     }
   }
 

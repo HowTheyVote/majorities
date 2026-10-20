@@ -5,16 +5,27 @@ import GroupsSelect from "./GroupsSelect";
 import Histogram from "./Histogram";
 import VotesList from "./VotesList";
 
+import "./Tracker.css";
+
 const EP_10_START_DATE = "2024-07-16";
 
 function Tracker() {
-  const [groups, setGroups] = useState<string | undefined>();
+  const [selected, setSelected] = useState<Array<string>>([]);
+
+  let combinations: Array<Array<string>> = [[]];
+
+  for (const item of selected) {
+    const withItem = combinations.map((combination) => [...combination, item]);
+    combinations.push(...withItem);
+  }
+
+  combinations = combinations.filter((combination) => combination.length > 0);
 
   const { data: all } = useVotes({
     pageSize: 0,
-    facets: ["month", "groups_required_for_majority"],
+    facets: ["month"],
     filters: {
-      "date[gte]": EP_10_START_DATE,
+      "date[gte]": [EP_10_START_DATE],
     },
   });
 
@@ -22,13 +33,15 @@ function Tracker() {
     pageSize: 20,
     facets: ["month"],
     filters: {
-      groups_required_for_majority: groups,
-      "date[gte]": EP_10_START_DATE,
+      groups_required_for_majority: combinations.map((groups) =>
+        groups.join("+"),
+      ),
+      "date[gte]": [EP_10_START_DATE],
     },
   });
 
   return (
-    <>
+    <div className="tracker">
       {all && filtered && (
         <Histogram
           data={prepareHistogramData(all.facets.month, filtered.facets.month)}
@@ -37,14 +50,13 @@ function Tracker() {
 
       {all && (
         <GroupsSelect
-          value={groups}
-          onChange={(value) => setGroups(value)}
-          options={all?.facets.groups_required_for_majority}
+          selected={selected}
+          onChange={(value) => setSelected(value)}
         />
       )}
 
       {filtered && <VotesList votes={filtered.results} />}
-    </>
+    </div>
   );
 }
 
