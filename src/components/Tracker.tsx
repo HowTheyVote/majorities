@@ -23,19 +23,21 @@ function Tracker() {
 
   const { data: all } = useVotes({
     pageSize: 0,
+    includeOnlyMain: false,
     facets: ["month"],
     filters: {
       "date[gte]": [EP_10_START_DATE],
-      "result": ["adopted"],
+      result: ["adopted"],
     },
   });
 
   const { data: filtered } = useVotes({
     pageSize: 20,
+    includeOnlyMain: false,
     facets: ["month"],
     filters: {
       "date[gte]": [EP_10_START_DATE],
-      "result": ["adopted"],
+      result: ["adopted"],
       groups_required_for_majority: combinations.map((groups) =>
         groups.join("+"),
       ),

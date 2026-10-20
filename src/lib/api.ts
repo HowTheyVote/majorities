@@ -20,15 +20,18 @@ export type VotesResponse = {
 
 export function useVotes({
   pageSize = 20,
+  includeOnlyMain = true,
   facets = [],
   filters = {},
 }: {
   pageSize?: number;
+  includeOnlyMain?: boolean;
   facets?: Array<string>;
   filters?: Record<string, Array<string>>;
 }) {
   const params = new URLSearchParams();
   params.set("page_size", pageSize.toString());
+  params.set("include_only_main", includeOnlyMain.toString());
 
   for (const facet of facets) {
     params.append("facets", facet);
