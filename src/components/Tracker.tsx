@@ -26,6 +26,7 @@ function Tracker() {
     facets: ["month"],
     filters: {
       "date[gte]": [EP_10_START_DATE],
+      "result": ["adopted"],
     },
   });
 
@@ -33,10 +34,11 @@ function Tracker() {
     pageSize: 20,
     facets: ["month"],
     filters: {
+      "date[gte]": [EP_10_START_DATE],
+      "result": ["adopted"],
       groups_required_for_majority: combinations.map((groups) =>
         groups.join("+"),
       ),
-      "date[gte]": [EP_10_START_DATE],
     },
   });
 
