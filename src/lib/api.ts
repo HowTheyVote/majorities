@@ -15,6 +15,7 @@ export type Facet = {
 
 export type VotesResponse = {
   results: Array<Vote>;
+  total: number;
   facets: Record<"month" | "groups_required_for_majority", Array<Facet>>;
 };
 

@@ -6,6 +6,7 @@ import Histogram from "./Histogram";
 import VotesList from "./VotesList";
 
 import "./Tracker.css";
+import Summary from "./Summary";
 
 const EP_10_START_DATE = "2024-07-16";
 
@@ -57,6 +58,10 @@ function Tracker() {
           selected={selected}
           onChange={(value) => setSelected(value)}
         />
+      )}
+
+      {selected.length > 0 && all && filtered && (
+        <Summary countAll={all.total} countFiltered={filtered.total} />
       )}
 
       {filtered && <VotesList votes={filtered.results} />}
