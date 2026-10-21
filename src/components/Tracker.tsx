@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useDeferredValue, useState } from "react";
 import { useVotes } from "../lib/api";
 import { prepareHistogramData } from "../lib/histogram";
 import GroupsSelect from "./GroupsSelect";
@@ -12,10 +12,11 @@ const EP_10_START_DATE = "2024-07-16";
 
 function Tracker() {
   const [selected, setSelected] = useState<Array<string>>([]);
+  const deferredSelected = useDeferredValue(selected);
 
   let combinations: Array<Array<string>> = [[]];
 
-  for (const item of selected) {
+  for (const item of deferredSelected) {
     const withItem = combinations.map((combination) => [...combination, item]);
     combinations.push(...withItem);
   }
@@ -60,7 +61,7 @@ function Tracker() {
         onChange={(value) => setSelected(value)}
       />
 
-      {selected.length > 0 && (
+      {deferredSelected.length > 0 && (
         <Summary countAll={all.total} countFiltered={filtered.total} />
       )}
 
