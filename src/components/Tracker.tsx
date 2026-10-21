@@ -45,26 +45,26 @@ function Tracker() {
     },
   });
 
+  if (!all || !filtered) {
+    return null;
+  }
+
   return (
     <div className="tracker">
-      {all && filtered && (
-        <Histogram
-          data={prepareHistogramData(all.facets.month, filtered.facets.month)}
-        />
-      )}
+      <Histogram
+        data={prepareHistogramData(all.facets.month, filtered.facets.month)}
+      />
 
-      {all && (
-        <GroupsSelect
-          selected={selected}
-          onChange={(value) => setSelected(value)}
-        />
-      )}
+      <GroupsSelect
+        selected={selected}
+        onChange={(value) => setSelected(value)}
+      />
 
-      {selected.length > 0 && all && filtered && (
+      {selected.length > 0 && (
         <Summary countAll={all.total} countFiltered={filtered.total} />
       )}
 
-      {filtered && <VotesList votes={filtered.results} />}
+      {<VotesList votes={filtered.results} />}
     </div>
   );
 }
