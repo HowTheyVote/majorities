@@ -1,12 +1,13 @@
 import { useDeferredValue, useState } from "react";
 import { useVotes } from "../lib/api";
 import { prepareHistogramData } from "../lib/histogram";
+import Callout from "./Callout";
 import GroupsSelect from "./GroupsSelect";
 import Histogram from "./Histogram";
+import Summary from "./Summary";
 import VotesList from "./VotesList";
 
 import "./Tracker.css";
-import Summary from "./Summary";
 
 const EP_10_START_DATE = "2024-07-16";
 
@@ -62,7 +63,9 @@ function Tracker() {
       />
 
       {deferredSelected.length > 0 && (
-        <Summary countAll={all.total} countFiltered={filtered.total} />
+        <Callout>
+          <Summary countAll={all.total} countFiltered={filtered.total} />
+        </Callout>
       )}
 
       {<VotesList votes={filtered.results} />}

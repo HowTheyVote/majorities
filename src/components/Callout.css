@@ -1,0 +1,7 @@
+.callout {
+  padding: var(--space-xs);
+  background-color: var(--color-gray-lightest);
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
