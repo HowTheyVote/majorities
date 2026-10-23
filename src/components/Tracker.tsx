@@ -55,6 +55,7 @@ function Tracker() {
     <div className="tracker">
       <Histogram
         data={prepareHistogramData(all.facets.month, filtered.facets.month)}
+        selectedGroups={selected}
       />
 
       <GroupsSelect
@@ -64,7 +65,11 @@ function Tracker() {
 
       {deferredSelected.length > 0 && (
         <Callout>
-          <Summary countAll={all.total} countFiltered={filtered.total} />
+          <Summary
+            countAll={all.total}
+            countFiltered={filtered.total}
+            selectedGroups={selected}
+          />
         </Callout>
       )}
 

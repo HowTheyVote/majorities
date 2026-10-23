@@ -34,7 +34,7 @@
 }
 
 .histogram__tooltip {
-  width: 15rem;
+  max-width: 18rem;
   padding: var(--space-xxs);
   background-color: #fff;
   border-radius: var(--radius-sm);

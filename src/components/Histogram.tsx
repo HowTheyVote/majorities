@@ -15,6 +15,7 @@ type Values = { all: number; filtered: number };
 
 type HistogramProps = {
   data: Record<Month, Values>;
+  selectedGroups: Array<string>;
 };
 
 const width = 640;
@@ -28,7 +29,7 @@ const formatMonth = (value: string) =>
     year: "2-digit",
   });
 
-function Histogram({ data }: HistogramProps) {
+function Histogram({ data, selectedGroups }: HistogramProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   const {
@@ -100,7 +101,12 @@ function Histogram({ data }: HistogramProps) {
       </svg>
 
       {tooltipOpen && tooltipData && (
-        <Tooltip data={tooltipData} left={tooltipLeft} top={tooltipTop} />
+        <Tooltip
+          selectedGroups={selectedGroups}
+          data={tooltipData}
+          left={tooltipLeft}
+          top={tooltipTop}
+        />
       )}
     </div>
   );
@@ -184,12 +190,13 @@ function Axis({ scale, top }: AxisProps) {
 }
 
 type TooltipProps = {
+  selectedGroups: Array<string>;
   data: { month: Month; values: Values };
   left: number | undefined;
   top: number | undefined;
 };
 
-function Tooltip({ data, left, top }: TooltipProps) {
+function Tooltip({ selectedGroups, data, left, top }: TooltipProps) {
   return (
     <TooltipWithBounds
       unstyled
@@ -202,6 +209,7 @@ function Tooltip({ data, left, top }: TooltipProps) {
         month={data.month}
         countAll={data.values.all}
         countFiltered={data.values.filtered}
+        selectedGroups={selectedGroups}
       />
     </TooltipWithBounds>
   );
