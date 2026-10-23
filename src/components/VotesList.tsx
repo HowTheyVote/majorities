@@ -23,6 +23,12 @@ function VotesList({ votes }: VotesListProps) {
           <br />
           <span className="votes-list__meta">
             <FormattedDate timestamp={vote.timestamp} />
+            {vote.reference && (
+              <>
+                {" · "}
+                {vote.reference}
+              </>
+            )}
             {vote.description && (
               <>
                 {" · "}

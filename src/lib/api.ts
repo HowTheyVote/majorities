@@ -5,6 +5,7 @@ export type Vote = {
   display_title: string;
   timestamp: string;
   description?: string;
+  reference?: string;
 };
 
 export type Facet = {
