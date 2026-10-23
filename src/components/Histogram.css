@@ -1,3 +1,7 @@
+.histogram {
+  position: relative;
+}
+
 .histogram svg {
   overflow: visible;
 }
@@ -8,6 +12,21 @@
 
 .histogram__bar[data-series="filtered"] {
   fill: var(--color-blue-dark);
+}
+
+.histogram__axis-line {
+  stroke: #fff;
+}
+
+.histogram__tick line {
+  stroke: var(--color-border);
+}
+
+.histogram__tick text {
+  fill: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  text-anchor: middle;
+  transform: translateY(0.25em);
 }
 
 .histogram__tooltip {

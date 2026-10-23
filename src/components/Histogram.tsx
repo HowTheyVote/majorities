@@ -3,8 +3,9 @@ import { localPoint } from "@visx/event";
 import { Group } from "@visx/group";
 import { scaleBand, scaleLinear } from "@visx/scale";
 import { Bar } from "@visx/shape";
-import { useTooltip, useTooltipInPortal } from "@visx/tooltip";
-import { useMemo } from "react";
+import { TooltipWithBounds, useTooltip } from "@visx/tooltip";
+import type { ScaleBand, ScaleLinear } from "@visx/vendor/d3-scale";
+import { type MouseEventHandler, useMemo } from "react";
 import Summary from "./Summary";
 
 import "./Histogram.css";
@@ -36,8 +37,8 @@ function Histogram({ data }: HistogramProps) {
     tooltipLeft,
     tooltipTop,
   } = useTooltip<{ month: Month; values: Values }>();
-  const { containerRef, TooltipInPortal } = useTooltipInPortal();
 
+  // Leave some space for the x axis
   const innerHeight = height - 24;
 
   const sortedMonths = useMemo(
@@ -68,80 +69,125 @@ function Histogram({ data }: HistogramProps) {
   return (
     <div className="histogram">
       <svg
-        ref={containerRef}
         aria-label="Number of votes by month"
         role="img"
         viewBox={`0 0 ${width} ${height}`}
       >
         <Group>
-          {sortedMonths.map((month) => {
-            const values = data[month];
-            const x = xScale(month);
+          {sortedMonths.map((month) => (
+            <BarStack
+              key={month}
+              month={month}
+              values={data[month]}
+              xScale={xScale}
+              yScale={yScale}
+              innerHeight={innerHeight}
+              onMouseMove={(event) => {
+                const point = localPoint(event);
+                showTooltip({
+                  tooltipData: { month, values: data[month] },
+                  tooltipLeft: point?.x,
+                  tooltipTop: point?.y,
+                });
+              }}
+              onMouseLeave={hideTooltip}
+            />
+          ))}
 
-            return (
-              <Group
-                key={month}
-                className="histogram__stack"
-                onMouseMove={(event) => {
-                  const point = localPoint(event);
-                  showTooltip({
-                    tooltipData: { month, values },
-                    tooltipLeft: point?.x,
-                    tooltipTop: point?.y,
-                  });
-                }}
-                onMouseLeave={hideTooltip}
-              >
-                {SERIES.map((key) => {
-                  const y = yScale(values[key]);
-
-                  return (
-                    <Bar
-                      key={key}
-                      className="histogram__bar"
-                      data-series={key}
-                      x={x}
-                      y={y}
-                      width={xScale.bandwidth()}
-                      height={innerHeight - y}
-                    />
-                  );
-                })}
-              </Group>
-            );
-          })}
-
-          <AxisBottom
-            top={innerHeight}
-            scale={xScale}
-            tickFormat={formatMonth}
-            tickLabelProps={() => ({
-              fill: "var(--color-text-muted)",
-              fontSize: 11,
-              textAnchor: "middle",
-            })}
-            tickStroke="var(--color-border)"
-            stroke="#fff"
-          />
+          <Axis scale={xScale} top={innerHeight} />
         </Group>
       </svg>
 
       {tooltipOpen && tooltipData && (
-        <TooltipInPortal
-          unstyled
-          applyPositionStyle
-          left={tooltipLeft}
-          top={tooltipTop}
-          className="histogram__tooltip"
-        >
-          <Summary
-            month={tooltipData.month}
-            countAll={tooltipData.values.all}
-            countFiltered={tooltipData.values.filtered}
-          />
-        </TooltipInPortal>
+        <Tooltip data={tooltipData} left={tooltipLeft} top={tooltipTop} />
       )}
     </div>
+  );
+}
+
+type BarStackProps = {
+  month: Month;
+  values: Values;
+  xScale: ScaleBand<Month>;
+  yScale: ScaleLinear<number, number>;
+  innerHeight: number;
+  onMouseMove: MouseEventHandler;
+  onMouseLeave: MouseEventHandler;
+};
+
+function BarStack({
+  month,
+  values,
+  xScale,
+  yScale,
+  innerHeight,
+  onMouseMove,
+  onMouseLeave,
+}: BarStackProps) {
+  return (
+    <Group
+      className="histogram__stack"
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+    >
+      {SERIES.map((key) => {
+        const y = yScale(values[key]);
+
+        return (
+          <Bar
+            key={key}
+            className="histogram__bar"
+            data-series={key}
+            x={xScale(month)}
+            y={y}
+            width={xScale.bandwidth()}
+            height={innerHeight - y}
+          />
+        );
+      })}
+    </Group>
+  );
+}
+
+type AxisProps = {
+  scale: ScaleBand<string>;
+  top: number;
+};
+
+function Axis({ scale, top }: AxisProps) {
+  return (
+    <AxisBottom
+      top={top}
+      scale={scale}
+      tickFormat={formatMonth}
+      tickLabelProps={() => ({})}
+      tickClassName="histogram__tick"
+      axisLineClassName="histogram__axis-line"
+    />
+  );
+}
+
+type TooltipProps = {
+  data: { month: Month; values: Values };
+  left: number | undefined;
+  top: number | undefined;
+};
+
+function Tooltip({ data, left, top }: TooltipProps) {
+  return (
+    <TooltipWithBounds
+      unstyled
+      applyPositionStyle
+      left={left}
+      top={top}
+      className="histogram__tooltip"
+    >
+      <Summary
+        month={data.month}
+        countAll={data.values.all}
+        countFiltered={data.values.filtered}
+      />
+    </TooltipWithBounds>
   );
 }
 
