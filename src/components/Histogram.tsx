@@ -4,6 +4,7 @@ import { Group } from "@visx/group";
 import { scaleBand, scaleLinear } from "@visx/scale";
 import { Bar } from "@visx/shape";
 import { useTooltip, useTooltipInPortal } from "@visx/tooltip";
+import { useMemo } from "react";
 import Summary from "./Summary";
 
 import "./Histogram.css";
@@ -39,21 +40,30 @@ function Histogram({ data }: HistogramProps) {
 
   const innerHeight = height - 24;
 
-  const sortedMonths = Object.keys(data).sort((a, b) => a.localeCompare(b));
+  const sortedMonths = useMemo(
+    () => Object.keys(data).sort((a, b) => a.localeCompare(b)),
+    [data],
+  );
 
-  const maxCount = Math.max(1, ...Object.values(data).map(({ all }) => all));
+  const xScale = useMemo(
+    () =>
+      scaleBand<string>({
+        domain: sortedMonths,
+        range: [0, width],
+        padding: 0.2,
+      }),
+    [sortedMonths],
+  );
 
-  const xScale = scaleBand<string>({
-    domain: sortedMonths,
-    range: [0, width],
-    padding: 0.2,
-  });
+  const yScale = useMemo(() => {
+    const maxCount = Math.max(1, ...Object.values(data).map(({ all }) => all));
 
-  const yScale = scaleLinear<number>({
-    domain: [0, maxCount],
-    range: [innerHeight, 0],
-    nice: true,
-  });
+    return scaleLinear<number>({
+      domain: [0, maxCount],
+      range: [innerHeight, 0],
+      nice: true,
+    });
+  }, [data, innerHeight]);
 
   return (
     <div className="histogram">
