@@ -18,6 +18,14 @@ type HistogramProps = {
 const width = 640;
 const height = 240;
 
+const SERIES = ["all", "filtered"] as const;
+
+const formatMonth = (value: string) =>
+  new Date(value).toLocaleDateString("en-US", {
+    month: "short",
+    year: "2-digit",
+  });
+
 function Histogram({ data }: HistogramProps) {
   const {
     showTooltip,
@@ -29,18 +37,15 @@ function Histogram({ data }: HistogramProps) {
   } = useTooltip<{ month: Month; values: Values }>();
   const { containerRef, TooltipInPortal } = useTooltipInPortal();
 
-  const innerWidth = width;
   const innerHeight = height - 24;
 
-  const sortedMonths = [...Object.keys(data)].sort((a, b) =>
-    a.localeCompare(b),
-  );
+  const sortedMonths = Object.keys(data).sort((a, b) => a.localeCompare(b));
 
   const maxCount = Math.max(1, ...Object.values(data).map(({ all }) => all));
 
   const xScale = scaleBand<string>({
     domain: sortedMonths,
-    range: [0, innerWidth],
+    range: [0, width],
     padding: 0.2,
   });
 
@@ -59,9 +64,9 @@ function Histogram({ data }: HistogramProps) {
         viewBox={`0 0 ${width} ${height}`}
       >
         <Group>
-          {Object.entries(data).map(([month, values]) => {
+          {sortedMonths.map((month) => {
+            const values = data[month];
             const x = xScale(month);
-            const series = ["all", "filtered"] as const;
 
             return (
               <Group
@@ -77,13 +82,13 @@ function Histogram({ data }: HistogramProps) {
                 }}
                 onMouseLeave={hideTooltip}
               >
-                {series.map((key) => {
+                {SERIES.map((key) => {
                   const y = yScale(values[key]);
 
                   return (
                     <Bar
                       key={key}
-                      className={`histogram__bar`}
+                      className="histogram__bar"
                       data-series={key}
                       x={x}
                       y={y}
@@ -99,12 +104,7 @@ function Histogram({ data }: HistogramProps) {
           <AxisBottom
             top={innerHeight}
             scale={xScale}
-            tickFormat={(value: string) =>
-              new Date(value).toLocaleDateString("en-US", {
-                month: "short",
-                year: "2-digit",
-              })
-            }
+            tickFormat={formatMonth}
             tickLabelProps={() => ({
               fill: "var(--color-text-muted)",
               fontSize: 11,
