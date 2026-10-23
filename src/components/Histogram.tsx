@@ -5,7 +5,7 @@ import { scaleBand, scaleLinear } from "@visx/scale";
 import { Bar } from "@visx/shape";
 import { TooltipWithBounds, useTooltip } from "@visx/tooltip";
 import type { ScaleBand, ScaleLinear } from "@visx/vendor/d3-scale";
-import { type MouseEventHandler, useMemo } from "react";
+import { type MouseEventHandler, useMemo, useRef } from "react";
 import Summary from "./Summary";
 
 import "./Histogram.css";
@@ -29,6 +29,8 @@ const formatMonth = (value: string) =>
   });
 
 function Histogram({ data }: HistogramProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
   const {
     showTooltip,
     hideTooltip,
@@ -66,7 +68,7 @@ function Histogram({ data }: HistogramProps) {
   }, [data, innerHeight]);
 
   return (
-    <div className="histogram">
+    <div ref={ref} className="histogram">
       <svg
         aria-label="Number of votes by month"
         role="img"
@@ -82,7 +84,7 @@ function Histogram({ data }: HistogramProps) {
               yScale={yScale}
               innerHeight={innerHeight}
               onMouseMove={(event) => {
-                const point = localPoint(event);
+                const point = localPoint(ref.current!, event);
                 showTooltip({
                   tooltipData: { month, values: data[month] },
                   tooltipLeft: point?.x,
