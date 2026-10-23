@@ -51,7 +51,6 @@ function Histogram({ data }: HistogramProps) {
       scaleBand<string>({
         domain: sortedMonths,
         range: [0, width],
-        padding: 0.2,
       }),
     [sortedMonths],
   );
@@ -124,24 +123,39 @@ function BarStack({
   onMouseMove,
   onMouseLeave,
 }: BarStackProps) {
+  const bandX = xScale(month) ?? 0;
+  const bandwidth = xScale.bandwidth();
+  const inset = (bandwidth * 0.2) / 2;
+
   return (
     <Group
       className="histogram__stack"
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
     >
+      <rect
+        className="histogram__dummy"
+        x={bandX}
+        y={0}
+        width={bandwidth}
+        height={innerHeight}
+      />
       {SERIES.map((key) => {
-        const y = yScale(values[key]);
+        const bandY = yScale(values[key]);
+        const x = bandX + inset;
+        const y = bandY;
+        const width = bandwidth - 2 * inset;
+        const height = innerHeight - y;
 
         return (
           <Bar
             key={key}
             className="histogram__bar"
             data-series={key}
-            x={xScale(month)}
+            x={x}
             y={y}
-            width={xScale.bandwidth()}
-            height={innerHeight - y}
+            width={width}
+            height={height}
           />
         );
       })}

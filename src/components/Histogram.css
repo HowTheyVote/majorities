@@ -6,6 +6,10 @@
   overflow: visible;
 }
 
+.histogram__dummy {
+  fill: transparent;
+}
+
 .histogram__bar[data-series="all"] {
   fill: var(--color-blue-light);
 }
