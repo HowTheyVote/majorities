@@ -1,6 +1,7 @@
-import { useDeferredValue, useState } from "react";
+import { useDeferredValue } from "react";
 import { useVotes, useVotesInfinite } from "../lib/api";
 import { prepareHistogramData } from "../lib/histogram";
+import { useUrlState } from "../lib/state";
 import Button from "./Button";
 import Callout from "./Callout";
 import GroupsSelect from "./GroupsSelect";
@@ -13,7 +14,7 @@ import "./Tracker.css";
 const EP_10_START_DATE = "2024-07-16";
 
 function Tracker() {
-  const [selected, setSelected] = useState<Array<string>>([]);
+  const [selected, setSelected] = useUrlState("groups", []);
   const deferredSelected = useDeferredValue(selected);
 
   let combinations: Array<Array<string>> = [[]];
