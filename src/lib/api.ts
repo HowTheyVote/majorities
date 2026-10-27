@@ -61,7 +61,7 @@ function voteUrl(id: string | number) {
 
 function votesUrl({
   page = 1,
-  pageSize = 20,
+  pageSize = 10,
   includeOnlyMain = true,
   facets = [],
   filters = {},

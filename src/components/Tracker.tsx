@@ -55,7 +55,6 @@ function Tracker() {
     setSize,
     isValidating,
   } = useVotesInfinite({
-    pageSize: 20,
     includeOnlyMain: false,
     filters: {
       "date[gte]": [EP_10_START_DATE],
