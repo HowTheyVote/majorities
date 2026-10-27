@@ -1,4 +1,5 @@
 import useSWR from "swr";
+import { immutable } from "swr/immutable";
 import useSWRInfinite from "swr/infinite";
 
 export type Vote = {
@@ -71,7 +72,10 @@ async function fetcher(url: string) {
 }
 
 export function useVotes(options: VotesOptions) {
-  return useSWR<VotesResponse>(votesUrl(options), fetcher, { suspense: true });
+  return useSWR<VotesResponse>(votesUrl(options), fetcher, {
+    suspense: true,
+    use: [immutable],
+  });
 }
 
 export function useVotesInfinite(options: Omit<VotesOptions, "page">) {
@@ -81,6 +85,10 @@ export function useVotesInfinite(options: Omit<VotesOptions, "page">) {
         ? null
         : votesUrl({ ...options, page: index + 1 }),
     fetcher,
-    { suspense: true },
+    {
+      suspense: true,
+      use: [immutable],
+      revalidateFirstPage: false,
+    },
   );
 }

@@ -48,7 +48,12 @@ function Tracker() {
     },
   });
 
-  const { data: pages, size, setSize, isValidating } = useVotesInfinite({
+  const {
+    data: pages,
+    size,
+    setSize,
+    isValidating,
+  } = useVotesInfinite({
     pageSize: 20,
     includeOnlyMain: false,
     filters: {
@@ -86,7 +91,7 @@ function Tracker() {
         </Callout>
       )}
 
-      <VotesList votes={pages.flatMap(page => page.results)} />
+      <VotesList votes={pages.flatMap((page) => page.results)} />
 
       {pages.at(-1)?.has_next && (
         <div className="tracker__more">
