@@ -1,4 +1,5 @@
 import type { Group, VoteStats } from "../lib/api";
+import { GROUPS } from "../lib/groups";
 
 import "./GroupPositions.css";
 
@@ -12,21 +13,17 @@ type GroupPositionsProps = {
 };
 
 function GroupPositions({ stats }: GroupPositionsProps) {
-  if (!stats) {
-    return null;
-  }
-
-  const positions = computeGroupPositions(stats);
+  const positions = stats ? computeGroupPositions(stats) : {};
 
   return (
     <ul className="group-positions">
-      {stats.map(({ group }) => (
+      {GROUPS.map(({ code, short_label }) => (
         <li
-          key={group.code}
+          key={code}
           className="group-positions__group"
-          data-position={positions[group.code]}
+          data-position={positions[code]}
         >
-          {group.short_label}
+          {short_label}
         </li>
       ))}
     </ul>

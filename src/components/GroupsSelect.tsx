@@ -1,15 +1,6 @@
-import "./GroupsSelect.css";
+import { GROUPS } from "../lib/groups";
 
-const GROUPS = [
-  { value: "GUE_NGL", label: "The Left" },
-  { value: "GREEN", label: "Greens/EFA" },
-  { value: "SD", label: "S&D" },
-  { value: "RENEW", label: "Renew" },
-  { value: "EPP", label: "EPP" },
-  { value: "ECR", label: "ECR" },
-  { value: "PFE", label: "PfE" },
-  { value: "ESN", label: "ESN" },
-];
+import "./GroupsSelect.css";
 
 type GroupsSelectProps = {
   selected?: Array<string>;
@@ -25,15 +16,15 @@ function GroupsSelect({ selected, onChange }: GroupsSelectProps) {
         onChange?.(data.getAll("groups") as Array<string>);
       }}
     >
-      {GROUPS.map(({ value, label }) => (
-        <label key={value} className="groups-select__group">
+      {GROUPS.map(({ code, short_label }) => (
+        <label key={code} className="groups-select__group">
           <input
             type="checkbox"
             name="groups"
-            value={value}
-            checked={selected?.includes(value)}
+            value={code}
+            checked={selected?.includes(code)}
           />
-          {label}
+          {short_label}
         </label>
       ))}
 
