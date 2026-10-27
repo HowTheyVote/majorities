@@ -3,13 +3,3 @@
   gap: var(--space-sm);
   list-style: none;
 }
-
-.votes-list__title {
-  color: inherit;
-  font-weight: 600;
-  text-decoration-thickness: 0.5px;
-}
-
-.votes-list__meta {
-  color: var(--color-text-muted);
-}

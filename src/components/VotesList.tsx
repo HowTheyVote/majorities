@@ -1,5 +1,5 @@
 import type { Vote } from "../lib/api";
-import FormattedDate from "./FormattedDate";
+import VoteCard from "./VoteCard";
 
 import "./VotesList.css";
 
@@ -12,30 +12,7 @@ function VotesList({ votes }: VotesListProps) {
     <ul className="votes-list">
       {votes.map((vote) => (
         <li key={vote.id}>
-          <a
-            className="votes-list__title"
-            href={`https://howtheyvote.eu/votes/${vote.id}`}
-            target="_blank"
-            rel="noopener"
-          >
-            {vote.display_title}
-          </a>
-          <br />
-          <span className="votes-list__meta">
-            <FormattedDate timestamp={vote.timestamp} />
-            {vote.reference && (
-              <>
-                {" · "}
-                {vote.reference}
-              </>
-            )}
-            {vote.description && (
-              <>
-                {" · "}
-                {vote.description}
-              </>
-            )}
-          </span>
+          <VoteCard vote={vote} />
         </li>
       ))}
     </ul>

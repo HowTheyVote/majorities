@@ -1,0 +1,9 @@
+.vote-card__title {
+  color: inherit;
+  font-weight: 600;
+  text-decoration-thickness: 0.5px;
+}
+
+.vote-card__meta {
+  color: var(--color-text-muted);
+}
