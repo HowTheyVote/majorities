@@ -1,4 +1,5 @@
 import useSWR from "swr";
+import useSWRInfinite from "swr/infinite";
 
 export type Vote = {
   id: number;
@@ -18,20 +19,27 @@ export type VotesResponse = {
   results: Array<Vote>;
   total: number;
   facets: Record<"month" | "groups_required_for_majority", Array<Facet>>;
+  has_next: boolean;
+  has_prev: boolean;
 };
 
-export function useVotes({
-  pageSize = 20,
-  includeOnlyMain = true,
-  facets = [],
-  filters = {},
-}: {
+type VotesOptions = {
+  page?: number;
   pageSize?: number;
   includeOnlyMain?: boolean;
   facets?: Array<string>;
   filters?: Record<string, Array<string>>;
-}) {
+};
+
+function votesUrl({
+  page = 1,
+  pageSize = 20,
+  includeOnlyMain = true,
+  facets = [],
+  filters = {},
+}: VotesOptions) {
   const params = new URLSearchParams();
+  params.set("page", page.toString());
   params.set("page_size", pageSize.toString());
   params.set("include_only_main", includeOnlyMain.toString());
 
@@ -45,24 +53,34 @@ export function useVotes({
     }
   }
 
-  return useAPI<VotesResponse>("votes", params);
+  const url = new URL(`${API_BASE_URL}/votes`);
+  url.search = params.toString();
+  return url.toString();
 }
 
-function useAPI<Data>(endpoint: string, params: URLSearchParams) {
-  const url = new URL(`${API_BASE_URL}/${endpoint}`);
-  url.search = params.toString();
+async function fetcher(url: string) {
+  const response = await fetch(url);
 
-  const fetcher = async () => {
-    const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(
+      `API request failed: ${response.status} ${response.statusText}`,
+    );
+  }
 
-    if (!response.ok) {
-      throw new Error(
-        `API request failed: ${response.status} ${response.statusText}`,
-      );
-    }
+  return response.json();
+}
 
-    return response.json();
-  };
+export function useVotes(options: VotesOptions) {
+  return useSWR<VotesResponse>(votesUrl(options), fetcher, { suspense: true });
+}
 
-  return useSWR<Data>(url.toString(), fetcher, { suspense: true });
+export function useVotesInfinite(options: Omit<VotesOptions, "page">) {
+  return useSWRInfinite<VotesResponse>(
+    (index, previousPage) =>
+      previousPage?.has_next === false
+        ? null
+        : votesUrl({ ...options, page: index + 1 }),
+    fetcher,
+    { suspense: true },
+  );
 }

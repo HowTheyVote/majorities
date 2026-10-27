@@ -1,6 +1,7 @@
 import { useDeferredValue, useState } from "react";
-import { useVotes } from "../lib/api";
+import { useVotes, useVotesInfinite } from "../lib/api";
 import { prepareHistogramData } from "../lib/histogram";
+import Button from "./Button";
 import Callout from "./Callout";
 import GroupsSelect from "./GroupsSelect";
 import Histogram from "./Histogram";
@@ -35,7 +36,7 @@ function Tracker() {
   });
 
   const { data: filtered } = useVotes({
-    pageSize: 20,
+    pageSize: 0,
     includeOnlyMain: false,
     facets: ["month"],
     filters: {
@@ -47,7 +48,19 @@ function Tracker() {
     },
   });
 
-  if (!all || !filtered) {
+  const { data: pages, size, setSize, isValidating } = useVotesInfinite({
+    pageSize: 20,
+    includeOnlyMain: false,
+    filters: {
+      "date[gte]": [EP_10_START_DATE],
+      result: ["adopted"],
+      groups_required_for_majority: combinations.map((groups) =>
+        groups.join("+"),
+      ),
+    },
+  });
+
+  if (!all || !filtered || !pages) {
     return null;
   }
 
@@ -73,7 +86,15 @@ function Tracker() {
         </Callout>
       )}
 
-      {<VotesList votes={filtered.results} />}
+      <VotesList votes={pages.flatMap(page => page.results)} />
+
+      {pages.at(-1)?.has_next && (
+        <div className="tracker__more">
+          <Button onClick={() => setSize(size + 1)} disabled={isValidating}>
+            {isValidating ? "Loading…" : "Load more votes"}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

@@ -3,3 +3,7 @@
   flex-direction: column;
   gap: var(--space);
 }
+
+.tracker__more {
+  text-align: center;
+}

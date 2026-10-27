@@ -1,0 +1,14 @@
+.button {
+  padding: var(--space-xs);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--color-blue-dark);
+  color: #fff;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 600;
+}
+
+.button[disabled] {
+  opacity: 0.5;
+}
