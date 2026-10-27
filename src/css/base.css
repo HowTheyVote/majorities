@@ -17,6 +17,9 @@
   --color-gray: rgb(90, 90, 100);
   --color-gray-light: rgb(161, 161, 175);
   --color-gray-lightest: rgb(240, 243, 248);
+  --color-green: rgb(8, 157, 133);
+  --color-red: rgb(204, 17, 0);
+  --color-blue: rgb(0, 118, 191);
 
   --color-bg: var(--color-blue-dark);
   --color-text: var(--color-black);

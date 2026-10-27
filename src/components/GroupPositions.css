@@ -1,0 +1,42 @@
+.group-positions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xxs);
+  list-style: none;
+}
+
+.group-positions__group {
+  display: flex;
+  gap: 0.25em;
+  padding-block: 0.125em;
+  padding-inline: 0.5em;
+  border: 1px solid var(--color-border);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius);
+  background-color: var(--color-gray-lightest);
+}
+
+.group-positions__group[data-position="FOR"],
+.group-positions__group[data-position="AGAINST"],
+.group-positions__group[data-position="ABSTENTION"] {
+  background: color-mix(in srgb, var(--color) 15%, transparent);
+  border: 1px solid
+    color-mix(
+      in srgb,
+      color-mix(in srgb, var(--color) 75%, black) 25%,
+      transparent
+    );
+  color: color-mix(in srgb, var(--color) 50%, black);
+}
+
+.group-positions__group[data-position="FOR"] {
+  --color: var(--color-green);
+}
+
+.group-positions__group[data-position="AGAINST"] {
+  --color: var(--color-red);
+}
+
+.group-positions__group[data-position="ABSTENTION"] {
+  --color: var(--color-blue);
+}

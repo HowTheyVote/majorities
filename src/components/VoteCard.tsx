@@ -1,5 +1,6 @@
-import { BaseVote } from "../lib/api"
+import { type BaseVote, useVote } from "../lib/api";
 import FormattedDate from "./FormattedDate";
+import GroupPositions from "./GroupPositions";
 
 import "./VoteCard.css";
 
@@ -8,6 +9,8 @@ type VoteCardProps = {
 };
 
 function VoteCard({ vote }: VoteCardProps) {
+  const { data } = useVote(vote.id);
+
   return (
     <div className="vote-card">
       <a
@@ -18,8 +21,7 @@ function VoteCard({ vote }: VoteCardProps) {
       >
         {vote.display_title}
       </a>
-      <br />
-      <span className="vote-card__meta">
+      <p className="vote-card__meta">
         <FormattedDate timestamp={vote.timestamp} />
         {vote.reference && (
           <>
@@ -33,7 +35,8 @@ function VoteCard({ vote }: VoteCardProps) {
             {vote.description}
           </>
         )}
-      </span>
+      </p>
+      <GroupPositions stats={data?.stats.by_group} />
     </div>
   );
 }

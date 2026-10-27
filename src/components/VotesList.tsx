@@ -1,10 +1,10 @@
-import type { Vote } from "../lib/api";
+import type { BaseVote } from "../lib/api";
 import VoteCard from "./VoteCard";
 
 import "./VotesList.css";
 
 type VotesListProps = {
-  votes: Array<Vote>;
+  votes: Array<BaseVote>;
 };
 
 function VotesList({ votes }: VotesListProps) {

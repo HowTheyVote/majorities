@@ -6,4 +6,5 @@
 
 .vote-card__meta {
   color: var(--color-text-muted);
+  margin-block-end: var(--space-xxs);
 }

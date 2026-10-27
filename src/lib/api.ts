@@ -2,12 +2,35 @@ import useSWR from "swr";
 import { immutable } from "swr/immutable";
 import useSWRInfinite from "swr/infinite";
 
-export type Vote = {
+export type Group = {
+  code: string;
+  label: string;
+  short_label: string;
+};
+
+export type VoteStats = {
+  FOR: number;
+  AGAINST: number;
+  ABSTENTION: number;
+  DID_NOT_VOTE: number;
+};
+
+export type BaseVote = {
   id: number;
   display_title: string;
   timestamp: string;
   description?: string;
   reference?: string;
+};
+
+export type Vote = BaseVote & {
+  is_main: boolean;
+  stats: {
+    by_group: Array<{
+      group: Group;
+      stats: VoteStats;
+    }>;
+  };
 };
 
 export type Facet = {
@@ -17,7 +40,7 @@ export type Facet = {
 };
 
 export type VotesResponse = {
-  results: Array<Vote>;
+  results: Array<BaseVote>;
   total: number;
   facets: Record<"month" | "groups_required_for_majority", Array<Facet>>;
   has_next: boolean;
@@ -31,6 +54,10 @@ type VotesOptions = {
   facets?: Array<string>;
   filters?: Record<string, Array<string>>;
 };
+
+function voteUrl(id: string | number) {
+  return `${API_BASE_URL}/votes/${id}`;
+}
 
 function votesUrl({
   page = 1,
@@ -69,6 +96,12 @@ async function fetcher(url: string) {
   }
 
   return response.json();
+}
+
+export function useVote(id: string | number) {
+  return useSWR<Vote>(voteUrl(id), fetcher, {
+    use: [immutable],
+  });
 }
 
 export function useVotes(options: VotesOptions) {
