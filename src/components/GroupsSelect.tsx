@@ -1,5 +1,6 @@
 import { GROUPS } from "../lib/groups";
 
+import "./Select.css";
 import "./GroupsSelect.css";
 
 type GroupsSelectProps = {
@@ -10,14 +11,14 @@ type GroupsSelectProps = {
 function GroupsSelect({ selected, onChange }: GroupsSelectProps) {
   return (
     <form
-      className="groups-select"
+      className="select groups-select"
       onChange={(event) => {
         const data = new FormData(event.currentTarget);
         onChange?.(data.getAll("groups") as Array<string>);
       }}
     >
       {GROUPS.map(({ code, short_label }) => (
-        <label key={code} className="groups-select__group">
+        <label key={code} className="select__control">
           <input
             type="checkbox"
             name="groups"
@@ -29,7 +30,7 @@ function GroupsSelect({ selected, onChange }: GroupsSelectProps) {
       ))}
 
       <button
-        className="groups-select__reset"
+        className="select__control groups-select__reset"
         type="button"
         onClick={() => onChange?.([])}
       >

@@ -1,20 +1,26 @@
 import { useDeferredValue } from "react";
 import { useVotes, useVotesInfinite } from "../lib/api";
 import { prepareHistogramData } from "../lib/histogram";
-import { useUrlState } from "../lib/state";
+import { useTrackerUrlState } from "../lib/state";
 import Button from "./Button";
 import Callout from "./Callout";
 import GroupsSelect from "./GroupsSelect";
 import Histogram from "./Histogram";
 import Summary from "./Summary";
 import VotesList from "./VotesList";
+import VotetypeSelect from "./VotetypeSelect";
 
 import "./Tracker.css";
 
 const EP_10_START_DATE = "2024-07-16";
 
 function Tracker() {
-  const [selected, setSelected] = useUrlState("groups", []);
+  const {
+    groups: selected,
+    includeOnlyMain,
+    setGroups: setSelected,
+    setIncludeOnlyMain,
+  } = useTrackerUrlState();
   const deferredSelected = useDeferredValue(selected);
 
   let combinations: Array<Array<string>> = [[]];
@@ -28,7 +34,7 @@ function Tracker() {
 
   const { data: all } = useVotes({
     pageSize: 0,
-    includeOnlyMain: false,
+    includeOnlyMain,
     facets: ["month"],
     filters: {
       "date[gte]": [EP_10_START_DATE],
@@ -38,7 +44,7 @@ function Tracker() {
 
   const { data: filtered } = useVotes({
     pageSize: 0,
-    includeOnlyMain: false,
+    includeOnlyMain,
     facets: ["month"],
     filters: {
       "date[gte]": [EP_10_START_DATE],
@@ -55,7 +61,7 @@ function Tracker() {
     setSize,
     isValidating,
   } = useVotesInfinite({
-    includeOnlyMain: false,
+    includeOnlyMain,
     filters: {
       "date[gte]": [EP_10_START_DATE],
       result: ["adopted"],
@@ -79,6 +85,11 @@ function Tracker() {
       <GroupsSelect
         selected={selected}
         onChange={(value) => setSelected(value)}
+      />
+
+      <VotetypeSelect
+        selected={includeOnlyMain}
+        onChange={setIncludeOnlyMain}
       />
 
       {deferredSelected.length > 0 && (
