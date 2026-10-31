@@ -11,7 +11,15 @@ import VotesList from "./VotesList";
 
 import "./Tracker.css";
 
-const EP_10_START_DATE = "2024-07-16";
+const DEFAULT_FILTERS: Record<string, Array<string>> = {
+  "date[gte]": ["2024-07-16"], // Start of 10th term
+  result: ["adopted"],
+  majority_type: [
+    "majority_of_votes_cast",
+    "majority_of_component_members",
+    "two_thirds_of_votes_cast_and_majority_of_component_members",
+  ],
+};
 
 function Tracker() {
   const [selected, setSelected] = useUrlState("groups", []);
@@ -30,10 +38,7 @@ function Tracker() {
     pageSize: 0,
     includeOnlyMain: false,
     facets: ["month"],
-    filters: {
-      "date[gte]": [EP_10_START_DATE],
-      result: ["adopted"],
-    },
+    filters: DEFAULT_FILTERS,
   });
 
   const { data: filtered } = useVotes({
@@ -41,8 +46,7 @@ function Tracker() {
     includeOnlyMain: false,
     facets: ["month"],
     filters: {
-      "date[gte]": [EP_10_START_DATE],
-      result: ["adopted"],
+      ...DEFAULT_FILTERS,
       groups_required_for_majority: combinations.map((groups) =>
         groups.join("+"),
       ),
@@ -57,8 +61,7 @@ function Tracker() {
   } = useVotesInfinite({
     includeOnlyMain: false,
     filters: {
-      "date[gte]": [EP_10_START_DATE],
-      result: ["adopted"],
+      ...DEFAULT_FILTERS,
       groups_required_for_majority: combinations.map((groups) =>
         groups.join("+"),
       ),
