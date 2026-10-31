@@ -11,9 +11,9 @@ typecheck:
 
 ESBUILD = ./node_modules/.bin/esbuild \
 	--bundle \
-	--public-path=/dist \
 	--sourcemap \
 	--outfile=dist/index.js \
+	--loader:.woff2=file \
 	--keep-names \
 	src/index.tsx
 
