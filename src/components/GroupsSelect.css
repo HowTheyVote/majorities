@@ -6,24 +6,4 @@
 
 .groups-select__reset {
   appearance: none;
-  font-family: inherit;
-  font-size: inherit;
-  color: inherit;
-  line-height: inherit;
-}
-
-.groups-select__group,
-.groups-select__reset {
-  display: flex;
-  gap: 0.25em;
-  padding-block: 0.125em;
-  padding-inline: 0.5em;
-  border: 1px solid var(--color-border);
-  font-size: var(--font-size-sm);
-  border-radius: var(--radius);
-  background-color: var(--color-gray-lightest);
-}
-
-.groups-select__group input {
-  accent-color: var(--color-blue-dark);
 }

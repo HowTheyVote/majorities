@@ -1,0 +1,17 @@
+.select__control {
+  display: flex;
+  gap: 0.25em;
+  padding-block: 0.125em;
+  padding-inline: 0.5em;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-gray-lightest);
+  color: inherit;
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  line-height: inherit;
+}
+
+.select__control input {
+  accent-color: var(--color-blue-dark);
+}

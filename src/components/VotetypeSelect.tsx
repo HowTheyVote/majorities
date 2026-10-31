@@ -1,4 +1,4 @@
-import "./GroupsSelect.css";
+import "./Select.css";
 import "./VotetypeSelect.css";
 
 type VotetypeSelectProps = {
@@ -8,8 +8,8 @@ type VotetypeSelectProps = {
 
 function VotetypeSelect({ selected, onChange }: VotetypeSelectProps) {
   return (
-    <div className="votetype-select">
-      <label className="groups-select__group">
+    <div className="select votetype-select">
+      <label className="select__control">
         <input
           type="checkbox"
           name="only_main"
