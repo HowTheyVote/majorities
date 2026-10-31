@@ -20,9 +20,13 @@ ESBUILD = ./node_modules/.bin/esbuild \
 dev: dist/index.html
 	$(ESBUILD) --serve=9000 --servedir=dist --define:API_BASE_URL='"http://localhost:5000/api"'
 
-build: dist/index.html
+build: dist/index.html dist/pictures/sharepic-default.png
 	$(ESBUILD) --minify --define:API_BASE_URL='"https://howtheyvote.eu/api"'
 
 dist/index.html: src/index.html
 	mkdir -p dist
 	cp src/index.html dist/index.html
+
+dist/pictures/sharepic-default.png: src/assets/pictures/sharepic-default.png
+	mkdir -p dist/pictures
+	cp src/assets/pictures/sharepic-default.png dist/pictures/sharepic-default.png
