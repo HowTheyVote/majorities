@@ -65,7 +65,7 @@ function GroupPosition({ short_label, stats }: GroupPositionProps) {
         onFocus={showPopover}
         onBlur={hidePopover}
       >
-        {short_label}
+        <span>{short_label}</span>
       </button>
       {stats && (
         <Popover ref={ref} id={id} popover="manual">

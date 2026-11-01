@@ -6,6 +6,26 @@
 }
 
 .group-positions__group {
+  display: block;
+  position: relative;
+  border: none;
+  background: transparent;
+  appearance: none;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.group-positions__group::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(-0.5 * var(--space-xxs));
+  right: calc(-0.5 * var(--space-xxs));
+  display: block;
+  height: 100%;
+}
+
+.group-positions__group span {
   display: flex;
   gap: 0.25em;
   padding-block: 0.125em;
@@ -16,9 +36,9 @@
   background-color: var(--color-gray-lightest);
 }
 
-.group-positions__group[data-position="FOR"],
-.group-positions__group[data-position="AGAINST"],
-.group-positions__group[data-position="ABSTENTION"] {
+.group-positions__group[data-position="FOR"] span,
+.group-positions__group[data-position="AGAINST"] span,
+.group-positions__group[data-position="ABSTENTION"] span {
   background: color-mix(in srgb, var(--color) 15%, transparent);
   border: 1px solid
     color-mix(
@@ -29,14 +49,14 @@
   color: color-mix(in srgb, var(--color) 50%, black);
 }
 
-.group-positions__group[data-position="FOR"] {
+.group-positions__group[data-position="FOR"] span {
   --color: var(--color-green);
 }
 
-.group-positions__group[data-position="AGAINST"] {
+.group-positions__group[data-position="AGAINST"] span {
   --color: var(--color-red);
 }
 
-.group-positions__group[data-position="ABSTENTION"] {
+.group-positions__group[data-position="ABSTENTION"] span {
   --color: var(--color-blue);
 }
