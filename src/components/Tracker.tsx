@@ -6,6 +6,7 @@ import Button from "./Button";
 import Callout from "./Callout";
 import GroupsSelect from "./GroupsSelect";
 import Histogram from "./Histogram";
+import Intro from "./Intro";
 import Summary from "./Summary";
 import VotesList from "./VotesList";
 
@@ -74,6 +75,8 @@ function Tracker() {
 
   return (
     <div className="tracker">
+      <Intro />
+
       <Histogram
         data={prepareHistogramData(all.facets.month, filtered.facets.month)}
         selectedGroups={selected}

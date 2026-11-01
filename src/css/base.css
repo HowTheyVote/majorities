@@ -55,6 +55,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+}
+
 strong {
   font-weight: 600;
 }

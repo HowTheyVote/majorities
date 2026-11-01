@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="app">
       <header className="app__header">
-        <h1 className="app__logo">HowTheyVote.eu Majority Tracker</h1>
+        <span className="app__logo">HowTheyVote.eu Majority Tracker</span>
       </header>
 
       <main className="app__main">

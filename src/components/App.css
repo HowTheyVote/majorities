@@ -19,10 +19,7 @@
 }
 
 .app__logo {
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-weight: 500;
+  font-weight: 600;
   color: #fff;
 }
 
