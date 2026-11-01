@@ -55,11 +55,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1 {
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
 a {
   color: inherit;
   text-decoration: underline;
@@ -67,4 +62,52 @@ a {
 
 strong {
   font-weight: 600;
+}
+
+.prose > *:not(:first-child) {
+  margin-block-start: var(--space-xxs);
+}
+
+.prose h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.prose h3 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.prose h3:not(:first-child) {
+  margin-block-start: var(--space-xs);
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.prose table th,
+.prose table td {
+  padding: var(--space-xxs);
+}
+
+.prose table th {
+  font-weight: 600;
+}
+
+.prose table thead th,
+.prose table thead td {
+  border-block-end: 1px solid var(--color-border);
+}
+
+.prose table tfoot th,
+.prose table tfoot td {
+  border-block-start: 1px solid var(--color-border);
+}
+
+.prose ul,
+.prose ol {
+  margin-inline-start: var(--space-sm);
 }
