@@ -1,6 +1,7 @@
 import { useId } from "react";
 import type { Group, VoteStats } from "../lib/api";
 import { GROUPS } from "../lib/groups";
+import Popover from "./Popover";
 
 import "./GroupPositions.css";
 
@@ -51,7 +52,7 @@ function GroupPosition({ short_label, stats }: GroupPositionProps) {
         {short_label}
       </button>
       {stats && (
-        <div popover="auto" id={id} className="group-positions__popover">
+        <Popover id={id} popover="auto">
           <strong>{stats.FOR} MEPs</strong> voted for.
           <br />
           <strong>{stats.AGAINST} MEPs</strong> voted against.
@@ -60,7 +61,7 @@ function GroupPosition({ short_label, stats }: GroupPositionProps) {
           <br />
           <strong>{stats.DID_NOT_VOTE} MEPs</strong> did not vote.
           <br />
-        </div>
+        </Popover>
       )}
     </li>
   );

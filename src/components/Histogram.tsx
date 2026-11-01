@@ -9,6 +9,7 @@ import { type MouseEventHandler, useMemo, useRef } from "react";
 import Summary from "./Summary";
 
 import "./Histogram.css";
+import Popover from "./Popover";
 
 type Month = string;
 type Values = { all: number; filtered: number };
@@ -198,19 +199,15 @@ type TooltipProps = {
 
 function Tooltip({ selectedGroups, data, left, top }: TooltipProps) {
   return (
-    <TooltipWithBounds
-      unstyled
-      applyPositionStyle
-      left={left}
-      top={top}
-      className="histogram__tooltip"
-    >
-      <Summary
-        month={data.month}
-        countAll={data.values.all}
-        countFiltered={data.values.filtered}
-        selectedGroups={selectedGroups}
-      />
+    <TooltipWithBounds unstyled applyPositionStyle left={left} top={top}>
+      <Popover>
+        <Summary
+          month={data.month}
+          countAll={data.values.all}
+          countFiltered={data.values.filtered}
+          selectedGroups={selectedGroups}
+        />
+      </Popover>
     </TooltipWithBounds>
   );
 }
