@@ -1,15 +1,13 @@
-import type { HTMLAttributes } from "react";
+import type { ComponentPropsWithRef } from "react";
 
 import "./Popover.css";
 
-type PopoverProps = Omit<HTMLAttributes<HTMLDivElement>, "className">;
+type PopoverProps = Omit<ComponentPropsWithRef<"div">, "className">;
 
-function Popover({ children, ...props }: PopoverProps) {
+function Popover({ children, ref, ...props }: PopoverProps) {
   return (
-    <div className="popover" {...props}>
-      <div className="popover__content">
-        {children}
-      </div>
+    <div ref={ref} className="popover" {...props}>
+      <div className="popover__content">{children}</div>
     </div>
   );
 }

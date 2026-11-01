@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { type FocusEvent, type MouseEvent, useId, useRef } from "react";
 import type { Group, VoteStats } from "../lib/api";
 import { GROUPS } from "../lib/groups";
 import Popover from "./Popover";
@@ -39,20 +39,36 @@ type GroupPositionProps = {
 
 function GroupPosition({ short_label, stats }: GroupPositionProps) {
   const id = useId();
+  const ref = useRef<HTMLDivElement>(null);
+
+  const showPopover = (
+    event: MouseEvent<HTMLButtonElement> | FocusEvent<HTMLButtonElement>,
+  ) => {
+    ref.current?.togglePopover({ force: true, source: event.currentTarget });
+  };
+
+  const hidePopover = (
+    event: MouseEvent<HTMLButtonElement> | FocusEvent<HTMLButtonElement>,
+  ) => {
+    ref.current?.togglePopover({ force: false, source: event.currentTarget });
+  };
 
   return (
     <li>
       <button
         type="button"
-        popoverTarget={id}
         className="group-positions__group"
         data-position={computeGroupPosition(stats)}
         aria-describedby={id}
+        onMouseEnter={showPopover}
+        onMouseLeave={hidePopover}
+        onFocus={showPopover}
+        onBlur={hidePopover}
       >
         {short_label}
       </button>
       {stats && (
-        <Popover id={id} popover="auto">
+        <Popover ref={ref} id={id} popover="manual">
           <strong>{stats.FOR} MEPs</strong> voted for.
           <br />
           <strong>{stats.AGAINST} MEPs</strong> voted against.

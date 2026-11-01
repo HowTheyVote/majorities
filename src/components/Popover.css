@@ -21,7 +21,6 @@
 
 .popover[popover] {
   position-area: block-start;
-  position-try-fallbacks: flip-block;
   margin-block: var(--space-xs);
 }
 
