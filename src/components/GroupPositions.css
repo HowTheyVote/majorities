@@ -16,6 +16,27 @@
   background-color: var(--color-gray-lightest);
 }
 
+.group-positions__popover {
+  position-area: block-start;
+  position-try-fallbacks: flip-block;
+  overflow: visible;
+
+  max-width: 18rem;
+  margin-block: var(--space-xs);
+  padding: var(--space-xxs);
+
+  background-color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  outline: 1px solid var(--color-border);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  font-size: var(--font-size-sm);
+}
+
+.group-positions__popover strong {
+  font-weight: 600;
+}
+
 .group-positions__group[data-position="FOR"],
 .group-positions__group[data-position="AGAINST"],
 .group-positions__group[data-position="ABSTENTION"] {
