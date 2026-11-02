@@ -1,3 +1,4 @@
+import { useIntersectionObserver } from "usehooks-ts";
 import { type BaseVote, useVote } from "../lib/api";
 import FormattedDate from "./FormattedDate";
 import GroupPositions from "./GroupPositions";
@@ -9,10 +10,17 @@ type VoteCardProps = {
 };
 
 function VoteCard({ vote }: VoteCardProps) {
-  const { data } = useVote(vote.id);
+  const { ref, isIntersecting } = useIntersectionObserver({
+    freezeOnceVisible: true,
+  });
+
+  const { data } = useVote({
+    id: vote.id,
+    enabled: isIntersecting,
+  });
 
   return (
-    <div className="vote-card">
+    <div ref={ref} className="vote-card">
       <a
         className="vote-card__title"
         href={`https://howtheyvote.eu/votes/${vote.id}`}

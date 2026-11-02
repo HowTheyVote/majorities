@@ -47,12 +47,20 @@ export type VotesResponse = {
   has_prev: boolean;
 };
 
-type VotesOptions = {
+type BaseOptions = {
+  enabled?: boolean;
+};
+
+type VotesOptions = BaseOptions & {
   page?: number;
   pageSize?: number;
   includeOnlyMain?: boolean;
   facets?: Array<string>;
   filters?: Record<string, Array<string>>;
+};
+
+type VoteOptions = BaseOptions & {
+  id: string | number;
 };
 
 function voteUrl(id: string | number) {
@@ -98,20 +106,23 @@ async function fetcher(url: string) {
   return response.json();
 }
 
-export function useVote(id: string | number) {
-  return useSWR<Vote>(voteUrl(id), fetcher, {
+export function useVote({ id, enabled = true }: VoteOptions) {
+  return useSWR<Vote>(enabled ? voteUrl(id) : null, fetcher, {
     use: [immutable],
   });
 }
 
-export function useVotes(options: VotesOptions) {
-  return useSWR<VotesResponse>(votesUrl(options), fetcher, {
+export function useVotes({ enabled = true, ...options }: VotesOptions) {
+  return useSWR<VotesResponse>(enabled ? votesUrl(options) : null, fetcher, {
     suspense: true,
     use: [immutable],
   });
 }
 
-export function useVotesInfinite(options: Omit<VotesOptions, "page">) {
+export function useVotesInfinite({
+  enabled = true,
+  ...options
+}: Omit<VotesOptions, "page">) {
   return useSWRInfinite<VotesResponse>(
     (index, previousPage) =>
       previousPage?.has_next === false
