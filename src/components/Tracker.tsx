@@ -1,5 +1,6 @@
 import { useDeferredValue } from "react";
 import { useVotes, useVotesInfinite } from "../lib/api";
+import { GROUPS } from "../lib/groups";
 import { prepareHistogramData } from "../lib/histogram";
 import { useUrlState } from "../lib/state";
 import Button from "./Button";
@@ -23,7 +24,8 @@ const DEFAULT_FILTERS: Record<string, Array<string>> = {
 };
 
 function Tracker() {
-  const [selected, setSelected] = useUrlState("groups", []);
+  const allowedGroupCodes = GROUPS.map((group) => group.code);
+  const [selected, setSelected] = useUrlState("groups", allowedGroupCodes);
   const deferredSelected = useDeferredValue(selected);
 
   let combinations: Array<Array<string>> = [[]];
@@ -34,6 +36,13 @@ function Tracker() {
   }
 
   combinations = combinations.filter((combination) => combination.length > 0);
+
+  if (selected.length === allowedGroupCodes.length) {
+    // If all groups are selected, that’s equivalent to no filter being applied.
+    // If MEPs from all groups vote against, a vote cannot pass (except for the
+    // hypothetical case where there is a majority of independent MEPs.)
+    combinations = [];
+  }
 
   const { data: all } = useVotes({
     pageSize: 0,

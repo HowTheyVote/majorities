@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 
 export function useUrlState(
   param: string,
-  values: Array<string>,
+  allowedValues: Array<string>,
 ): [Array<string>, (value: Array<string>) => void] {
   const [state, setState] = useState<Array<string>>(() => {
     const params = new URLSearchParams(window.location.search);
-    return params.has(param) ? params.getAll(param) : values;
+    return params
+      .getAll(param)
+      .filter((value) => allowedValues.includes(value));
   });
 
   useEffect(() => {
