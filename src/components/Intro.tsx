@@ -127,6 +127,19 @@ function Intro() {
             As of Nov 1, 2026, these procedure types cover approximately 80% of
             all adopted roll-call votes in the 10th term.
           </p>
+          <h3>Acknowledgments</h3>
+          <p>
+            We would like to thank{" "}
+            <a
+              href="https://www.swp-berlin.org/en/researcher/paul-bochtler"
+              target="_blank"
+              rel="noopener"
+            >
+              Paul Bochtler
+            </a>{" "}
+            from the German Institute for International and Security Affairs for
+            discussions on the calculation of decisive votes.
+          </p>
         </div>
       </Dialog>
     </div>
