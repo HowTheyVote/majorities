@@ -41,11 +41,9 @@ function Intro() {
             A group is decisive if the vote would not have passed had its MEPs
             who voted for instead voted against.
           </p>
-
           <p>
             <strong>Example:</strong> Were ESN or S&D decisive in this vote?
           </p>
-
           <table>
             <thead>
               <tr>
@@ -82,27 +80,22 @@ function Intro() {
               </tr>
             </tfoot>
           </table>
-
           <p>
             Assume simple majority: The vote passes if more MEPs vote for than
             against. MEPs that abstain or do not vote are ignored. With 273
             votes for and 256 against, this vote passes.
           </p>
-
           <p>
             <strong>ESN is decisive:</strong> Flipping the 24 for votes, the
             vote wouldn’t have passed with only 273 - 24 = 249 votes for and 256
             + 24 = 280 votes against.
           </p>
-
           <p>
             <strong>S&D isn’t decisive:</strong> Flipping the single for vote,
             the vote would have still passed with 273 - 1 = 272 votes for and
             256 + 1 = 257 votes against.
           </p>
-
           <h3>What is the basis for the calculations?</h3>
-
           <p>
             This tool covers roll-call votes since the beginning of the 10th
             term of the European Parliament, including votes on amendments. As
@@ -126,6 +119,19 @@ function Intro() {
           <p>
             As of Nov 1, 2026, these procedure types cover approximately 80% of
             all adopted roll-call votes in the 10th term.
+          </p>
+          <h3>Feedback</h3>
+          <p>
+            The Majority Tracker is built by the{" "}
+            <a href="https://howtheyvote.eu" target="_blank" rel="noopener">
+              HowTheyVote.eu
+            </a>{" "}
+            team. It is completely free to use, but we rely on feedback from
+            users like you! Help us improve this tool by giving feedback in{" "}
+            <a href="https://tally.so/r/zENZz1" target="_blank" rel="noopener">
+              our very short survey
+            </a>
+            .
           </p>
           <h3>Acknowledgments</h3>
           <p>

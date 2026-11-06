@@ -25,6 +25,13 @@ function App() {
 
       <footer className="app__footer">
         <p>
+          Help us improve this tool by taking a two minute{" "}
+          <a href="https://tally.so/r/zENZz1" target="_blank" rel="noopener">
+            feedback survey
+          </a>
+          .
+        </p>
+        <p>
           Built using the HowTheyVote.eu API and data licensed under the Open
           Database License.
         </p>
